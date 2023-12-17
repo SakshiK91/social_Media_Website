@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="icon" type="image/png" href="https://storage.googleapis.com/bytewalk/icon.png"/>
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+      <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/bytewalk/profilepage.css">
+      <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/bytewalk/styles.css">
+</head>
+<body>
+  {% comment %} {% extends "feed/layout.html" %} {% endcomment %}
+  {% load static %} 
+  {% load crispy_forms_tags %}
+  {% block cssfiles %} 
+  {% endblock cssfiles %} 
+  {% block content %}
+  <br/>
+  <div class="container">
+    <div class="col-sm-6 col-md-6 col-lg-6 mx-auto" align = "center">
+      <h1 style="font-weight: bold; margin-top: 100px;">Welcome to SocialHUB</h1>
+    </div>
+    <div class="row">
+      
+      <div class="col-sm-6 col-md-6 col-lg-6 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center"><b>Sign In</b></h5>
+            <form class="form-signin" method="POST">
+              {% csrf_token %}
+              <fieldset class="form-group">
+                <br />
+                {{form|crispy}}
+                <div id="captcha">
+                 <b> Solve: </b>
+                  <span id="captcha-text"></span>
+                  <input type="text" id="captcha-input" placeholder="Answer" required>
+                </div>
+              </fieldset>
+              <div class="form-group">
+                <button
+                  class="btn btn-lg btn-primary btn-block text-uppercase"
+                  type="submit"
+                >
+                  Login</button
+                ><br /><br />
+                <a
+                  class="btn btn-lg btn-warning btn-block text-uppercase"
+                  href="{% url 'password_reset' %}"
+                  >Forgot Password?</a
+                >
+              </div>
+              <small
+                ><p class="text-center">
+                  Not registered yet!
+                  <a href="{% url 'register' %}"><b>Register Now!</b></a>
+                </p></small
+              >
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock content %}
+  <script>
+    // Generate random captcha
+    var captcha1 = Math.floor(Math.random() * 10);
+    var captcha2 = Math.floor(Math.random() * 10);
+    var captchaText = captcha1 + ' + ' + captcha2 + ' = ';
+    document.getElementById('captcha-text').innerHTML = captchaText;
+    
+    // Check captcha on submit
+    document.querySelector('form').addEventListener('submit', function(e) {
+      var captchaInput = document.getElementById('captcha-input').value;
+      var captchaAnswer = captcha1 + captcha2;
+      if (captchaInput != captchaAnswer) {
+        e.preventDefault();
+        alert('Invalid Captcha. Please try again.');
+      }
+    });
+  </script>
+</body>
+</html>
